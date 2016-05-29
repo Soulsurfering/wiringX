@@ -41,7 +41,7 @@ static struct layout_t {
 	enum pinmode_t mode;
 
 	int fd;
-	
+
 } layout[] = {
  { "PB0",  0, { 0x24,  0 }, { 0x34,  0 }, FUNCTION_DIGITAL, PINMODE_NOT_SET, 0 },
  { "PB1",  0, { 0x24,  4 }, { 0x34,  1 }, FUNCTION_DIGITAL, PINMODE_NOT_SET, 0 },
