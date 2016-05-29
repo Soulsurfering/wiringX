@@ -1,5 +1,5 @@
 /*
-	Copyright (c) 2014 CurlyMo <curlymoo1@gmail.com>
+	Copyright (c) 2016 CurlyMo <curlymoo1@gmail.com>
 
   This Source Code Form is subject to the terms of the Mozilla Public
   License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -22,17 +22,54 @@
 
 static struct soc_t *socs = NULL;
 
-void soc_register(struct soc_t *soc) {
-	soc->next = socs;
-	socs = soc;
+void soc_register(struct soc_t **soc, char *brand, char *type) {
+	int i = 0;
+
+	if((*soc = malloc(sizeof(struct soc_t))) == NULL) {
+		fprintf(stderr, "out of memory\n");
+		exit(EXIT_FAILURE);
+	}
+
+	strcpy((*soc)->brand, brand);
+	strcpy((*soc)->chip, type);	
+
+	(*soc)->map = NULL;
+	(*soc)->layout = NULL;
+	(*soc)->support.isr_modes = 0;
+
+	(*soc)->fd = 0;	
+	
+	(*soc)->page_size = 0;
+
+	(*soc)->gc = NULL;
+	(*soc)->selectableFd = NULL;
+
+	(*soc)->pinMode = NULL;
+	(*soc)->setup = NULL;
+	(*soc)->digitalRead = NULL;
+	(*soc)->digitalWrite = NULL;
+	(*soc)->getPinName = NULL;
+	(*soc)->setMap = NULL;
+	(*soc)->validGPIO = NULL;
+	(*soc)->isr = NULL;
+	(*soc)->waitForInterrupt = NULL;
+
+	for (i = 0; i < MAX_REG_AREA; ++i) {
+		(*soc)->gpio[i] = NULL;
+		(*soc)->base_addr[i] = 0;
+		(*soc)->base_offs[i] = 0;
+	}
+
+	(*soc)->next = socs;
+	socs = *soc;
 }
 
-void soc_writel(unsigned long addr, unsigned long val) {
-	*((unsigned long *)(addr)) = val;
+void soc_writel(unsigned long addr, uint32_t val) {
+	*((volatile uint32_t *)(addr)) = val;
 }
 
-unsigned long soc_readl(unsigned long addr) {
-	return *((unsigned long *)(addr));
+uint32_t soc_readl(unsigned long addr) {
+	return *((volatile uint32_t *)(addr));
 }
 
 int soc_sysfs_check_gpio(struct soc_t *soc, char *path) {
@@ -177,8 +214,12 @@ int soc_sysfs_gpio_reset_value(struct soc_t *soc, char *path) {
 	} else {	
 		ioctl(fd, FIONREAD, &count);
 		for(i=0; i<count; ++i) {
-			read(fd, &c, 1);
+			int x = read(fd, &c, 1);
+			if(x != 1) {
+				continue;
+			}
 		}
+		lseek(fd, 0, SEEK_SET);
 	}
 
 	return fd;
@@ -192,7 +233,10 @@ int soc_wait_for_interrupt(struct soc_t *soc, int fd, int ms) {
 	polls.fd = fd;
 	polls.events = POLLPRI;
 
-	(void)read(fd, &c, 1);
+	x = read(fd, &c, 1);
+	if(x != 1) {
+		return -1;
+	}
 	lseek(fd, 0, SEEK_SET);	
 	
 	x = poll(&polls, 1, ms);

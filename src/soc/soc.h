@@ -1,5 +1,5 @@
 /*
-	Copyright (c) 2014 CurlyMo <curlymoo1@gmail.com>
+	Copyright (c) 2016 CurlyMo <curlymoo1@gmail.com>
 
   This Source Code Form is subject to the terms of the Mozilla Public
   License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -10,6 +10,9 @@
 #define __WIRINGX_SOC_H_
 
 #include "../wiringX.h"
+#include <stdint.h>
+
+#define MAX_REG_AREA	8
 
 struct layout_t;
 
@@ -18,6 +21,7 @@ typedef struct soc_t {
 	char chip[255];
 
 	int *map;
+	int *irq;
 	
 	struct layout_t *layout;
 
@@ -25,12 +29,12 @@ typedef struct soc_t {
 		int isr_modes;
 	} support;
 	
-	void *gpio[2];
+	void *gpio[MAX_REG_AREA];
 	int fd;
 	
 	unsigned long page_size;
-	unsigned long base_addr[2];
-	unsigned long base_offs[2];
+	unsigned long base_addr[MAX_REG_AREA];
+	unsigned long base_offs[MAX_REG_AREA];
 	
 	int (*digitalWrite)(int, enum digital_value_t);
 	int (*digitalRead)(int);
@@ -40,6 +44,7 @@ typedef struct soc_t {
 
 	int (*setup)(void);
 	void (*setMap)(int *);
+	void (*setIRQ)(int *);
 	char *(*getPinName)(int);	
 
 	int (*validGPIO)(int);
@@ -49,10 +54,10 @@ typedef struct soc_t {
 	struct soc_t *next;
 } soc_t;
 
-void soc_register(struct soc_t *);
+void soc_register(struct soc_t **, char *, char *);
 struct soc_t *soc_get(char *, char *);
-void soc_writel(unsigned long, unsigned long);
-unsigned long soc_readl(unsigned long);
+void soc_writel(unsigned long, uint32_t);
+uint32_t soc_readl(unsigned long);
 int soc_gc(void);
 
 int soc_sysfs_check_gpio(struct soc_t *, char *);
