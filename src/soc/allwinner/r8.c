@@ -41,7 +41,7 @@ static struct layout_t {
 	enum pinmode_t mode;
 
 	int fd;
-
+	
 } layout[] = {
  { "PB0",  0, { 0x24,  0 }, { 0x34,  0 }, FUNCTION_DIGITAL, PINMODE_NOT_SET, 0 },
  { "PB1",  0, { 0x24,  4 }, { 0x34,  1 }, FUNCTION_DIGITAL, PINMODE_NOT_SET, 0 },
@@ -118,7 +118,7 @@ static struct layout_t {
  { "PG9",  0, { 0xDC,  4 }, { 0xE8,  9 }, FUNCTION_DIGITAL | FUNCTION_INTERRUPT, PINMODE_NOT_SET, 0 }, // INT9
  { "PG10", 0, { 0xDC,  8 }, { 0xE8, 10 }, FUNCTION_DIGITAL | FUNCTION_INTERRUPT, PINMODE_NOT_SET, 0 }, // INT10
  { "PG11", 0, { 0xDC, 12 }, { 0xE8, 11 }, FUNCTION_DIGITAL | FUNCTION_INTERRUPT, PINMODE_NOT_SET, 0 }, // INT11
- { "PG12", 0, { 0xDC, 16 }, { 0xE8, 12 }, FUNCTION_DIGITAL | FUNCTION_INTERRUPT, PINMODE_NOT_SET, 0 } // INT12
+ { "PG12", 0, { 0xDC, 16 }, { 0xE8, 12 }, FUNCTION_DIGITAL | FUNCTION_INTERRUPT, PINMODE_NOT_SET, 0 }  // INT12
 };
 
 static int allwinnerR8Setup(void) {
