@@ -23,6 +23,7 @@ The supported devices are:
 - Radxa Rock 
 - MIPS CI20 Creator
 - ODROID
+- CHIP Computer
 
 ###Donations
 
@@ -42,9 +43,10 @@ mkdir build
 cd build
 cmake ..
 make
-#For Debian based linuxes
+#From here you can also just do make install
+#Or for Debian based linuxes
 cpack -G DEB
-#For Red-Hat based linuxes
+#Or for Red-Hat based linuxes
 cpack -G RPM
 ```
 * To install the final package run:
@@ -59,5 +61,55 @@ wiringX is available in the Arch Linux ARM repository. To install, simply:
 ```
 pacman -S wiringx-git
 ```
-Pin numbering of the Raspberry Pi, Hummingboard, BananaPi and Radxa Rock can be found here:
+Pin numbering of the Raspberry Pi, Hummingboard, BananaPi, Radxa Rock and chip can be found here:
 http://wiringx.org/
+
+You can also see pin numbering with the example code wiringx-pinlist
+
+```
+root@ttn-gateway:~/wiringX/Soulsurfering/wiringX/build# ./wiringx-pinlist chip
+GPIO mapping for chip
+GPIO 099 => PD3
+GPIO 100 => PD4
+GPIO 101 => PD5
+GPIO 102 => PD6
+GPIO 103 => PD7
+GPIO 106 => PD10
+GPIO 107 => PD11
+GPIO 108 => PD12
+GPIO 109 => PD13
+GPIO 110 => PD14
+GPIO 111 => PD15
+GPIO 114 => PD18
+GPIO 115 => PD19
+GPIO 116 => PD20
+GPIO 117 => PD21
+GPIO 118 => PD22
+GPIO 119 => PD23
+GPIO 120 => PD24
+GPIO 121 => PD25
+GPIO 122 => PD26
+GPIO 123 => PD27
+GPIO 128 => PE0
+GPIO 129 => PE1
+GPIO 130 => PE2
+GPIO 131 => PE3
+GPIO 132 => PE4
+GPIO 133 => PE5
+GPIO 134 => PE6
+GPIO 135 => PE7
+GPIO 136 => PE8
+GPIO 137 => PE9
+GPIO 138 => PE10
+GPIO 139 => PE11
+GPIO 408 => Valid but unknown
+GPIO 409 => Valid but unknown
+GPIO 410 => Valid but unknown
+GPIO 411 => Valid but unknown
+GPIO 412 => Valid but unknown
+GPIO 413 => Valid but unknown
+GPIO 414 => Valid but unknown
+GPIO 415 => Valid but unknown
+root@ttn-gateway:~/wiringX/Soulsurfering/wiringX/build#
+
+```
