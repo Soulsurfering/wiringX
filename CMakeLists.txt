@@ -88,8 +88,8 @@ file(GLOB wiringX
 	"${PROJECT_SOURCE_DIR}/src/platform/lemaker/*.h"
 	"${PROJECT_SOURCE_DIR}/src/platform/solidrun/*.c"
 	"${PROJECT_SOURCE_DIR}/src/platform/solidrun/*.h"
-	"${PROJECT_SOURCE_DIR}/src/platform/nextthingco/*.c"
-	"${PROJECT_SOURCE_DIR}/src/platform/nextthingco/*.h"
+	"${PROJECT_SOURCE_DIR}/src/platform/nextthing/*.c"
+	"${PROJECT_SOURCE_DIR}/src/platform/nextthing/*.h"
 	"${PROJECT_SOURCE_DIR}/src/platform/raspberrypi/*.c"
 	"${PROJECT_SOURCE_DIR}/src/platform/raspberrypi/*.h"
 	"${PROJECT_SOURCE_DIR}/src/platform/hardkernel/*.c"
@@ -114,10 +114,12 @@ add_library(wiringx_shared SHARED $<TARGET_OBJECTS:sources>)
 
 set_target_properties(wiringx_shared wiringx_static PROPERTIES OUTPUT_NAME wiringX)
 
+add_executable(wiringx-pinlist ${PROJECT_SOURCE_DIR}/examples/pinlist.c)
 add_executable(wiringx-blink ${PROJECT_SOURCE_DIR}/examples/blink.c)
 add_executable(wiringx-interrupt ${PROJECT_SOURCE_DIR}/examples/interrupt.c)
 add_executable(wiringx-read ${PROJECT_SOURCE_DIR}/examples/read.c)
 
+target_link_libraries(wiringx-pinlist wiringx_shared)
 target_link_libraries(wiringx-blink wiringx_shared)
 target_link_libraries(wiringx-interrupt wiringx_shared pthread)
 target_link_libraries(wiringx-read wiringx_shared)
