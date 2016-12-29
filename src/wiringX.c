@@ -28,6 +28,7 @@
 
 #include "soc/allwinner/a10.h"
 #include "soc/allwinner/a31s.h"
+#include "soc/allwinner/r8.h"
 #include "soc/nxp/imx6dqrm.h"
 #include "soc/nxp/imx6sdlrm.h"
 #include "soc/broadcom/2835.h"
@@ -51,6 +52,7 @@
 #include "platform/hardkernel/odroidc1.h"
 #include "platform/hardkernel/odroidc2.h"
 #include "platform/hardkernel/odroidxu4.h"
+#include "platform/nextthing/chip.h"
 
 static struct platform_t *platform = NULL;
 static int namenr = 0;
@@ -221,6 +223,7 @@ int wiringXSetup(char *name, void (*func)(int, const char *, ...)) {
 	/* Init all SoC's */
 	allwinnerA10Init();
 	allwinnerA31sInit();
+	allwinnerR8Init();
 	nxpIMX6DQRMInit();
 	nxpIMX6SDLRMInit();
 	broadcom2835Init();
@@ -245,6 +248,7 @@ int wiringXSetup(char *name, void (*func)(int, const char *, ...)) {
 	odroidc1Init();
 	odroidc2Init();
 	odroidxu4Init();
+	chipInit();
 
 	if((platform = platform_get_by_name(name, &namenr)) == NULL) {
 		char *tmp = NULL;
@@ -270,6 +274,17 @@ char *wiringXPlatform(void) {
 		return -1;
 	}
 	return platform->name[namenr];
+}
+
+char *getPinName(int pin) {
+	if(platform == NULL) {
+		wiringXLog(LOG_ERR, "wiringX has not been properly setup (no platform has been selected)");
+		return NULL;
+	} else if(platform->getPinName == NULL) {
+		wiringXLog(LOG_ERR, "The %s does not support the getPinName functionality", platform->name);
+		return NULL;
+	}
+	return platform->getPinName(pin);
 }
 
 int pinMode(int pin, enum pinmode_t mode) {

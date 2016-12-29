@@ -107,17 +107,27 @@ static int isXIOPin(int pin) {
 }
 
 static int chipValidGPIO(int pin) {
-	if (isXIOPin(pin))
+	if (isXIOPin(pin)==0)
 		return 0;
-	
+
 	if(pin >= 0 && pin < (sizeof(map)/sizeof(map[0]))) {
-		if(map[pin] == -1) {
-			return -1;
+		if(map[pin] != -1) {
+			return 0;
 		}
-		return 0;
-	} else {
-		return -1;
+	} 
+	return -1;
+}
+
+static char *chipGetPinName(int i) {
+	if(map[i] == -1) {
+		return NULL;
 	}
+	
+	if (isXIOPin(i) == 0 ) {
+		return NULL;
+	}
+	
+	return chip->soc->getPinName(map[i]);
 }
 
 static int chipPinMode(int i, enum pinmode_t mode) {
@@ -135,7 +145,7 @@ static int chipPinMode(int i, enum pinmode_t mode) {
 	return chip->soc->pinMode(i, mode);
 }
 
-static int digitalRead(int pin) {
+static int chipDigitalRead(int pin) {
 	if (isXIOPin(pin)) {
 		// TODO handle XIO pins via I2C
 		return -1;
@@ -158,12 +168,11 @@ static int chipDigitalWrite(int i, enum digital_value_t value) {
 }
 
 void chipInit(void) {
-	chip = malloc(sizeof(struct platform_t));
-	strcpy(chip->name, "chip");
+	platform_register(&chip, "chip");
 
 	chip->soc = soc_get("Allwinner", "R8");
-	chip->soc->setMap(map);
 
+	chip->getPinName = &chipGetPinName;
 	chip->digitalRead = &chipDigitalRead;
 	chip->digitalWrite = &chipDigitalWrite;
 	chip->pinMode = &chipPinMode;
@@ -177,5 +186,4 @@ void chipInit(void) {
 
 	chip->validGPIO = &chipValidGPIO;
 
-	platform_register(chip);
 }

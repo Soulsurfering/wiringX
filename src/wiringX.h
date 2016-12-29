@@ -63,6 +63,7 @@ typedef struct wiringXSerial_t {
 } wiringXSerial_t;
 
 void delayMicroseconds(unsigned int);
+char * getPinName(int pin) ;
 int pinMode(int, enum pinmode_t);
 int wiringXSetup(char *, void (*)(int, const char *, ...));
 int wiringXGC(void);

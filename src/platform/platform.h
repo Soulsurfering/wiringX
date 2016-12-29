@@ -23,6 +23,7 @@ typedef struct platform_t {
 	int (*setup)(void);
 	int (*pinMode)(int, enum pinmode_t);
 	int (*analogRead)(int);
+	char* (*getPinName)(int);
 	int (*digitalWrite)(int, enum digital_value_t);
 	int (*digitalRead)(int);
 	int (*waitForInterrupt)(int, int);
