@@ -135,8 +135,13 @@ static int allwinnerR8Setup(void) {
 	return 0;
 }
 
-static char *allwinnerR8GetPinName(int pin) {
-	return allwinnerR8->layout[pin].name;
+static char *allwinnerR8GetPinName(int i) {
+
+  // wiringXLog(LOG_ERR, "allwinnerR8GetPinName(%d) Name=%s", i, layout[i].name);
+  //wiringXLog(LOG_ERR, "allwinnerR8GetPinName(%d) pin=%d", i, allwinnerR8->map[i]);
+	
+	return allwinnerR8->layout[i].name;
+	
 }
 
 static void allwinnerR8SetMap(int *map) {
@@ -350,11 +355,8 @@ static int allwinnerR8SelectableFd(int i) {
 }
 
 void allwinnerR8Init(void) {
-	allwinnerR8 = malloc(sizeof(struct soc_t));
-
-	strcpy(allwinnerR8->brand, "Allwinner");
-	strcpy(allwinnerR8->chip, "R8");
-
+	soc_register(&allwinnerR8, "Allwinner", "R8");
+	
 	allwinnerR8->map = NULL;
 	allwinnerR8->layout = layout;
 
@@ -375,6 +377,4 @@ void allwinnerR8Init(void) {
 	allwinnerR8->setMap = &allwinnerR8SetMap;
 	allwinnerR8->isr = &allwinnerR8ISR;
 	allwinnerR8->waitForInterrupt = &allwinnerR8WaitForInterrupt;
-
-	soc_register(allwinnerR8);
 }
