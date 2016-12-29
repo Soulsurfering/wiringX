@@ -37,6 +37,7 @@ void platform_register(struct platform_t **platform, char *name) {
 	(*platform)->setup = NULL;
 	(*platform)->pinMode = NULL;
 	(*platform)->analogRead = NULL;
+	(*platform)->getPinName = NULL;
 	(*platform)->digitalWrite = NULL;
 	(*platform)->digitalRead = NULL;
 	(*platform)->waitForInterrupt = NULL;
