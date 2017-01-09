@@ -298,6 +298,11 @@ int pinMode(int pin, enum pinmode_t mode) {
 	return platform->pinMode(pin, mode);
 }
 
+int pinModeX(int pin, enum pinmode_t mode) {
+	return pinMode(pin, mode);
+}
+
+
 int digitalWrite(int pin, enum digital_value_t value) {
 	if(platform == NULL) {
 		wiringXLog(LOG_ERR, "wiringX has not been properly setup (no platform has been selected)");
@@ -309,6 +314,11 @@ int digitalWrite(int pin, enum digital_value_t value) {
 	return platform->digitalWrite(pin, value);
 }
 
+int digitalWriteX(int pin, enum digital_value_t value) {
+	return digitalWrite(pin, value);
+}
+
+
 int digitalRead(int pin) {
 	if(platform == NULL) {
 		wiringXLog(LOG_ERR, "wiringX has not been properly setup (no platform has been selected)");
@@ -318,6 +328,10 @@ int digitalRead(int pin) {
 		return -1;
 	}
 	return platform->digitalRead(pin);
+}
+
+int digitalReadX(int pin) {
+	return digitalRead(pin);
 }
 
 int wiringXISR(int pin, enum isr_mode_t mode) {

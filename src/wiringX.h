@@ -65,12 +65,15 @@ typedef struct wiringXSerial_t {
 void delayMicroseconds(unsigned int);
 char * getPinName(int pin) ;
 int pinMode(int, enum pinmode_t);
+int pinModeX(int, enum pinmode_t);
 int wiringXSetup(char *, void (*)(int, const char *, ...));
 int wiringXGC(void);
 
 // int analogRead(int channel);
 int digitalWrite(int, enum digital_value_t);
 int digitalRead(int);
+int digitalWriteX(int, enum digital_value_t);
+int digitalReadX(int);
 int waitForInterrupt(int, int);
 int wiringXISR(int, enum isr_mode_t);
 
