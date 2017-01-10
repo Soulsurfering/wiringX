@@ -128,6 +128,7 @@ install(FILES ${CMAKE_BINARY_DIR}/libwiringX.so DESTINATION lib/ COMPONENT libra
 install(FILES ${CMAKE_BINARY_DIR}/libwiringX.a DESTINATION lib/ COMPONENT library)
 install(FILES ${PROJECT_SOURCE_DIR}/src/wiringX.h DESTINATION include/ COMPONENT library)
 
+install(PROGRAMS ${CMAKE_BINARY_DIR}/wiringx-pinlist DESTINATION sbin/ COMPONENT library)
 install(PROGRAMS ${CMAKE_BINARY_DIR}/wiringx-blink DESTINATION sbin/ COMPONENT library)
 install(PROGRAMS ${CMAKE_BINARY_DIR}/wiringx-interrupt DESTINATION sbin/ COMPONENT library)
 install(PROGRAMS ${CMAKE_BINARY_DIR}/wiringx-read DESTINATION sbin/ COMPONENT library)
